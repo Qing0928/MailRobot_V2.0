@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 import time
 
 '''account = 'b10717029@yuntech.edu.tw'
-password = 'yucheng0934'
+password = '**********'
 smtp = smtplib.SMTP('webmail.yuntech.edu.tw', 25)
 smtp.ehlo()
 #smtp.starttls() >> yuntech webmail doesn't support
@@ -54,7 +54,7 @@ class mail:
         return e'''
 
 
-'''test = mail('b10717029@yuntech.edu.tw', 'yucheng0934')
+'''test = mail('b10717029@yuntech.edu.tw', '***********')
 tacc = test.account
 tpass = test.password
 result = test.connect()
