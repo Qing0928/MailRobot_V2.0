@@ -2,30 +2,20 @@ import smtplib
 from email.mime.text import MIMEText
 import time
 
-'''account = 'b10717029@yuntech.edu.tw'
-password = '**********'
-smtp = smtplib.SMTP('webmail.yuntech.edu.tw', 25)
-smtp.ehlo()
-#smtp.starttls() >> yuntech webmail doesn't support
-smtp.login(account, password)'''
-
 class mail:
-    def __init__(self, account, password):
-        self.account = account
-        self.password = password
+    def __init__(self):
         self.smtp = smtplib.SMTP('webmail.yuntech.edu.tw', 25)
 
-    def connect(self):
+    def connect(self, account, password):
         self.smtp.ehlo()
         try:
-            result = self.smtp.login(self.account, self.password)
-            '''
-            type of result is 'tuple'
-            if login success >> result[0] is 235
-            '''
+            result = self.smtp.login(account, password)
+
             return result
-        except smtplib.SMTPRecipientsRefused as e:
-            return e
+        except smtplib.SMTPAuthenticationError as e:
+            error_msg = str(e)
+
+            return error_msg
 
     def sent(self, from_addr, to_addr, subject, msg):
         try:
@@ -34,34 +24,24 @@ class mail:
             msg['From'] = from_addr
             msg['To'] = to_addr
             result = self.smtp.send_message(msg)
+
             return result
         except smtplib.SMTPRecipientsRefused as e:
-            return e
+            error_msg = str(e)
+            return error_msg
+            
+test = mail()
+result = test.connect('b10717029@yuntech.edu.tw', 'yucheng0934')
 
-'''def mail_sent(account, password, from_addr, to_addr, subject, msg):
-    try:
-        msg = MIMEText(msg)
-        msg['Subject'] = subject
-        msg['From'] = from_addr
-        msg['To'] = to_addr
-        smtp = smtplib.SMTP('webmail.yuntech.edu.tw', 25)
-        smtp.ehlo()
-        #smtp.starttls() >> yuntech webmail doesn't support
-        smtp.login(account, password)
-        result = smtp.send_message(msg)
-        return result
-    except smtplib.SMTPRecipientsRefused as e:
-        return e'''
-
-
-'''test = mail('b10717029@yuntech.edu.tw', '***********')
-tacc = test.account
-tpass = test.password
-result = test.connect()
 start = time.time()
-sent = test.sent('b10717029@yuntech.edu.tw', 'b10717029@yuntech.edu.tw', 'class test', 'success')
+sent = test.sent('b10717029@yuntech.edu.tw', 'b10717029@yuntech.edu.tw', 'unknowtest', 'success')
+print(type(sent))
+sent = test.sent('b10717029@yuntech.edu.tw', 'b10717099@yuntech.edu.tw', 'unknowtest', 'success')
+print(sent)
+sent = test.sent('b10717029@yuntech.edu.tw', 'b10717098@yuntech.edu.tw', 'unknowtest', 'success')
+print(sent)
+
 end = time.time()
 use = round(end - start, 3)
-print('acc:{}\npass:{}\nresult:{}\nuse:{}s'.format(tacc, tpass, result, use))
-print(type(result))
-print(result[0])'''
+
+print('result:{}\nuse:{}s'.format(result, use))
